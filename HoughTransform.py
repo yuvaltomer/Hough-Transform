@@ -1,4 +1,5 @@
 # Imports
+from email.mime import image
 import cv2
 import imghdr
 import ntpath
@@ -33,7 +34,7 @@ def constructAccumulatorArray(image):
         # for each edge point, for each theta value calculate its rho value according to 
         # polar line equation, and increment the corresponding cell by 1
         for j in range(len(thetas)):
-            rho = int((x * np.cos(thetas[j]) + y * np.sin(thetas[j]))) + diagonal
+            rho = int((x * np.cos(thetas[j]) + y * np.sin(thetas[j]))) + diagonal   # value should be a non-negative integer
             accArray[rho, j] += 1
 
     return accArray, rhos, thetas
@@ -156,6 +157,10 @@ def selectImage():
     if imageName != '' and not imghdr.what(imageName):
         imageName = prevImageName
         messagebox.showerror('File Format isn\'t Supported', 'The format of the file youv\'e selected is not supported.\nPlease select a different file.')
+        return
+
+    if imageName == '' and prevImageName != '':
+        imageName = prevImageName
         return
 
     if imageName == '':
