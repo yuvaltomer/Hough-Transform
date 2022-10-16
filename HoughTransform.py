@@ -1,5 +1,4 @@
 # Imports
-from email.mime import image
 import cv2
 import imghdr
 import ntpath
