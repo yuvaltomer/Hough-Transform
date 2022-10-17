@@ -10,6 +10,18 @@ from tkinter import messagebox
 from tkinter import ttk
 
 
+# Constants
+RHO_VALUES_STEP = 1
+THETA_VALUES_STEP = 1
+SQUARE_SIZE = 5
+LINES_COLOR = (0, 255, 0)
+LINES_THICKNESS = 2
+GAUSSIAN_KERNEL_SIZE = (5, 5)
+GAUSSIAN_KERNEL_X_DEVIATION = 1.5
+CANNY_LOW_THRESHOLD = 100
+CANNY_HIGH_THRESHOLD = 200
+
+
 # Create an accumulator array based on the edges image
 def constructAccumulatorArray(image):
 
@@ -20,8 +32,8 @@ def constructAccumulatorArray(image):
         diagonal = int(diagonal) + 1
     
     # construct the array, initial values are 0
-    rhos = np.arange(-diagonal, diagonal, 1)
-    thetas = np.deg2rad(np.arange(-90, 90, 1))
+    rhos = np.arange(-diagonal, diagonal, RHO_VALUES_STEP)
+    thetas = np.deg2rad(np.arange(-90, 90, THETA_VALUES_STEP))
     accArray = np.zeros((len(rhos), len(thetas)), dtype = np.uint64)
     
     yIndices, xIndices = np.nonzero(image)  # get indices of edge points
@@ -42,7 +54,6 @@ def constructAccumulatorArray(image):
 # Find peaks in the accumulator array, based on parameters passed by the user
 def findMaxIndices(accArray, numOfLines):
     
-    SQUARE_SIZE = 5 # can be defined according to desired accuracy and noise resilience
     indices = []
 
     # find the next peak, append it to peaks list and initialize nearby cells according to SQUARE_SIZE
@@ -94,7 +105,7 @@ def drawLines(thetas, rhos, indices, image):
         y1 = int(y1)
         y2 = int(y2)
 
-        cv2.line(image, (x1, y1), (x2, y2), (0, 255, 0), 2)
+        cv2.line(image, (x1, y1), (x2, y2), LINES_COLOR, LINES_THICKNESS)
 
 
 # Show original image, then edges image (using Canny Edge Detection), then Hough Tranform image
@@ -112,8 +123,8 @@ def main(numOfLines, original, edges):
 
     # Edges image
     grayscaleImage = cv2.cvtColor(inputImage, cv2.COLOR_RGB2GRAY)
-    blurredImage = cv2.GaussianBlur(grayscaleImage, (5, 5), 1.5)
-    edgesImage = cv2.Canny(blurredImage, 100, 200)
+    blurredImage = cv2.GaussianBlur(grayscaleImage, GAUSSIAN_KERNEL_SIZE, GAUSSIAN_KERNEL_X_DEVIATION)
+    edgesImage = cv2.Canny(blurredImage, CANNY_LOW_THRESHOLD, CANNY_HIGH_THRESHOLD)
 
     if edges == 1:
         cv2.imshow('Edges', edgesImage)
