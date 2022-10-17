@@ -45,8 +45,13 @@ def constructAccumulatorArray(image):
         # for each edge point, for each theta value calculate its rho value according to 
         # polar line equation, and increment the corresponding cell by 1
         for j in range(len(thetas)):
-            rho = int((x * np.cos(thetas[j]) + y * np.sin(thetas[j]))) + diagonal   # value should be a non-negative integer
-            accArray[rho, j] += 1
+            rho = x * np.cos(thetas[j]) + y * np.sin(thetas[j])
+            rhoIndex = np.searchsorted(rhos, rho, side = 'left')    # find index of closest value in rhos array
+
+            if rhoIndex >= len(rhos):
+                rhoIndex = len(rhos) - 1
+
+            accArray[rhoIndex, j] += 1
 
     return accArray, rhos, thetas
 
