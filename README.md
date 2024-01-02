@@ -1,6 +1,6 @@
 # Hough-Transform
 This python program suggests a simple implementation to the Hough transform algorithm, used to detect straight lines in source images.
-Detailed information and research about Hough transform can be found in [Hough Transform Final Paper](Hough_Transform_Final_Paper.pdf) (Hebrew) or online at https://www.analyticsvidhya.com/blog/2022/06/a-complete-guide-on-hough-transform/
+Detailed information and research about Hough transform can be found in [Hough Transform Final Paper](HoughTransformFinalPaper.pdf) (Hebrew) or online at https://www.analyticsvidhya.com/blog/2022/06/a-complete-guide-on-hough-transform/
 
 ## Prerequisites:
 Make sure you have Python3 and OpenCV (cv2) installed before using this program.
